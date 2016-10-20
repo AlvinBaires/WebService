@@ -40,4 +40,23 @@ public class MiWebServices {
             return Response.status(200).entity("Error").build();
         }
     }
+    
+    @GET
+    @Path("/{user}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response getMsgByUsua(@PathParam("user") String user) {
+        try
+        {
+            AlumnosResponse obje = new AlumnosCtrl().consByUsua(user);
+            ObjectMapper mapa = new ObjectMapper();
+            mapa.configure(SerializationFeature.INDENT_OUTPUT, true);
+            StringWriter sali = new StringWriter();
+            mapa.writeValue(sali, obje);
+            return Response.status(200).entity(sali.toString()).build();
+        }
+        catch(Exception ex)
+        {
+            return Response.status(200).entity("Error").build();
+        }
+    }
 }
