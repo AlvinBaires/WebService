@@ -16,12 +16,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sv.udb.modelo.Alumnos;
 import com.sv.udb.modelo.Empleados;
-import com.sv.udb.modelo.Seccalum;
 import com.sv.udb.modelo.Usuarios;
-import com.sv.udb.utils.MiHash;
 import com.sv.udb.utils.WebServicesCtrl;
 import java.io.StringWriter;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -34,7 +31,8 @@ public class MiWebServices {
     @GET
     @Path("consLogi/{user}/{pass}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response getMsg(@PathParam("user") String user, @PathParam("pass") String pass) {
+    public Response getMsg(@PathParam("user") String user, @PathParam("pass") String pass)
+    {
         try
         {
             Usuarios obje = new WebServicesCtrl().cons(user, pass);
@@ -105,7 +103,8 @@ public class MiWebServices {
     @GET
     @Path("consAlum/{carn}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response getMsg(@PathParam("carn") String carn) {
+    public Response getMsg(@PathParam("carn") String carn)
+    {
         try
         {
             Alumnos obje = new WebServicesCtrl().consAlum(carn);
@@ -161,7 +160,8 @@ public class MiWebServices {
     @GET
     @Path("consUsua/{nomb}/{apel}/{tipo}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response getMsg(@PathParam("nomb") String nomb, @PathParam("apel") String apel, @PathParam("tipo") String tipo) {
+    public Response getMsg(@PathParam("nomb") String nomb, @PathParam("apel") String apel, @PathParam("tipo") String tipo)
+    {
         try
         {
             List<Object[]> obje = new WebServicesCtrl().consListUsua(nomb.trim(), apel.trim(), tipo.trim());
@@ -202,7 +202,8 @@ public class MiWebServices {
     @GET
     @Path("consUsua/{usua}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response getMsgByUsua(@PathParam("usua") String usua) {
+    public Response getMsgByUsua(@PathParam("usua") String usua)
+    {
         try
         {
             Object[] obje = new WebServicesCtrl().consUsua(usua.trim());
