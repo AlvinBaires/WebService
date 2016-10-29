@@ -77,6 +77,32 @@ public class WebServicesCtrl
         return resp;
     }
     
+    public List<Alumnos> consAlum(String nomb, String apel, String grad, String espe)
+    {
+        List<Alumnos> resp = null;
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("POOPU");
+        EntityManager em = emf.createEntityManager();
+        try
+        {
+            Query q = em.createQuery("SELECT a FROM Alumnos a WHERE a.nomb LIKE :nomb OR a.apel LIKE :apel OR a.grad LIKE :grad OR a.espe LIKE :espe", Alumnos.class);
+            q.setParameter("nomb", "%" + nomb + "%");
+            q.setParameter("apel", "%" + apel + "%");
+            q.setParameter("grad", "%" + grad + "%");
+            q.setParameter("espe", "%" + espe + "%");
+            resp = q.setMaxResults(10).getResultList();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            em.close();
+            emf.close();            
+        }
+        return resp;
+    }
+    
     public List<Empleados> consEmplByAlum(String carn)
     {
         List<Empleados> resp = null;
@@ -163,6 +189,88 @@ public class WebServicesCtrl
             {
                 resp = (Object[])results.get(0);
             }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            em.close();
+            emf.close();            
+        }
+        return resp;
+    }
+    
+    //Empleados
+    public Empleados consEmpl(String usua)
+    {
+        Empleados resp = null;
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("POOPU");
+        EntityManager em = emf.createEntityManager();
+        try
+        {
+            String query = "SELECT e.* FROM empleados e INNER JOIN usuarios u ON e.codi = u.codi_empl WHERE u.acce_usua = ?1";
+            Query q = em.createNativeQuery(query, Empleados.class);
+            q.setParameter(1, usua);
+            List results = q.getResultList();
+            if (!results.isEmpty())
+            {
+                resp= (Empleados)results.get(0);
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            em.close();
+            emf.close();            
+        }
+        return resp;
+    }
+    
+    public Empleados consEmpl(int codi)
+    {
+        Empleados resp = null;
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("POOPU");
+        EntityManager em = emf.createEntityManager();
+        try
+        {
+            String query = "SELECT e.* FROM empleados e WHERE e.codi = ?1";
+            Query q = em.createNativeQuery(query, Empleados.class);
+            q.setParameter(1, codi);
+            List results = q.getResultList();
+            if (!results.isEmpty())
+            {
+                resp= (Empleados)results.get(0);
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            em.close();
+            emf.close();            
+        }
+        return resp;
+    }
+    
+    public List<Empleados> consListEmpl(String nomb, String apel)
+    {
+        List<Empleados> resp = null;
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("POOPU");
+        EntityManager em = emf.createEntityManager();
+        try
+        {
+            String query = "SELECT e FROM Empleados e WHERE e.nomb LIKE :nomb OR e.apel LIKE :apel";
+            Query q = em.createQuery(query, Empleados.class);
+            q.setParameter("nomb", "%" + nomb + "%");
+            q.setParameter("apel", "%" + apel + "%");
+            resp = q.setMaxResults(10).getResultList();
         }
         catch(Exception ex)
         {

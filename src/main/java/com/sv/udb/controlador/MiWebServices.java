@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sv.udb.modelo.Alumnos;
 import com.sv.udb.modelo.Empleados;
+import com.sv.udb.modelo.Seccempl;
 import com.sv.udb.modelo.Usuarios;
 import com.sv.udb.utils.WebServicesCtrl;
 import java.io.StringWriter;
@@ -31,7 +32,7 @@ public class MiWebServices {
     @GET
     @Path("consLogi/{user}/{pass}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response getMsg(@PathParam("user") String user, @PathParam("pass") String pass)
+    public Response consLogi(@PathParam("user") String user, @PathParam("pass") String pass)
     {
         try
         {
@@ -103,7 +104,7 @@ public class MiWebServices {
     @GET
     @Path("consAlum/{carn}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response getMsg(@PathParam("carn") String carn)
+    public Response consAlum(@PathParam("carn") String carn)
     {
         try
         {
@@ -158,9 +159,245 @@ public class MiWebServices {
     }
     
     @GET
+    @Path("consEmpl/{usua}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response consEmpl(@PathParam("usua") String usua)
+    {
+        try
+        {
+            Empleados obje = new WebServicesCtrl().consEmpl(usua);
+            ObjectMapper mapa = new ObjectMapper();
+            JsonNode objeJson = mapa.createObjectNode();
+            if(obje!= null)
+            {
+                ((ObjectNode) objeJson).put("resp", Boolean.TRUE);
+                ((ObjectNode) objeJson).put("nomb", obje.getNomb() + " " + obje.getApel());
+                ((ObjectNode) objeJson).put("foto", obje.getFoto());
+                ((ObjectNode) objeJson).put("mail", obje.getMail());
+                String tipo;
+                switch(obje.getTipoEmpl())
+                {
+                    case 1:
+                        tipo = "doceTecn";
+                        break;
+                    case 2:
+                        tipo = "doceAcad";
+                        break;
+                    case 3:
+                        tipo = "emplAdmi";
+                        break;
+                    case 4:
+                        tipo = "emplRece";
+                        break;
+                    default:
+                        tipo = "N/D";
+                        break;
+                }
+                ((ObjectNode) objeJson).put("tipo", tipo);
+                ((ObjectNode) objeJson).put("grupGuia", obje.getGrupGuia());
+                ((ObjectNode) objeJson).put("esta", obje.getEsta());
+                ArrayNode nodoJson = mapa.createArrayNode();
+                for(Seccempl temp : obje.getSeccemplList())
+                {
+                    JsonNode elemJson = mapa.createObjectNode();
+                    ((ObjectNode) elemJson).put("grad", temp.getCodiSecc().getGrad());
+                    ((ObjectNode) elemJson).put("nomb", temp.getCodiSecc().getNomb());
+                    ((ObjectNode) elemJson).put("desc", temp.getCodiSecc().getDesc());
+                    nodoJson.add(elemJson);
+                }
+                ((ObjectNode) objeJson).put("grup", nodoJson);
+            }
+            else
+            {
+                ((ObjectNode) objeJson).put("resp", Boolean.FALSE);
+            }
+            mapa.configure(SerializationFeature.INDENT_OUTPUT, true);
+            StringWriter sali = new StringWriter();
+            mapa.writeValue(sali, objeJson);
+            return Response.status(200).entity(sali.toString()).build();
+        }
+        catch(Exception ex)
+        {
+            return Response.status(200).entity("Error: " + ex.getMessage()).build();
+        }
+    }
+    
+    
+    @GET
+    @Path("consEmplByCodi/{codi}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response consEmplByCodi(@PathParam("codi") int codi)
+    {
+        try
+        {
+            Empleados obje = new WebServicesCtrl().consEmpl(codi);
+            ObjectMapper mapa = new ObjectMapper();
+            JsonNode objeJson = mapa.createObjectNode();
+            if(obje!= null)
+            {
+                ((ObjectNode) objeJson).put("resp", Boolean.TRUE);
+                ((ObjectNode) objeJson).put("nomb", obje.getNomb() + " " + obje.getApel());
+                ((ObjectNode) objeJson).put("foto", obje.getFoto());
+                ((ObjectNode) objeJson).put("mail", obje.getMail());
+                String tipo;
+                switch(obje.getTipoEmpl())
+                {
+                    case 1:
+                        tipo = "doceTecn";
+                        break;
+                    case 2:
+                        tipo = "doceAcad";
+                        break;
+                    case 3:
+                        tipo = "emplAdmi";
+                        break;
+                    case 4:
+                        tipo = "emplRece";
+                        break;
+                    default:
+                        tipo = "N/D";
+                        break;
+                }
+                ((ObjectNode) objeJson).put("tipo", tipo);
+                ((ObjectNode) objeJson).put("grupGuia", obje.getGrupGuia());
+                ((ObjectNode) objeJson).put("esta", obje.getEsta());
+                ArrayNode nodoJson = mapa.createArrayNode();
+                for(Seccempl temp : obje.getSeccemplList())
+                {
+                    JsonNode elemJson = mapa.createObjectNode();
+                    ((ObjectNode) elemJson).put("grad", temp.getCodiSecc().getGrad());
+                    ((ObjectNode) elemJson).put("nomb", temp.getCodiSecc().getNomb());
+                    ((ObjectNode) elemJson).put("desc", temp.getCodiSecc().getDesc());
+                    nodoJson.add(elemJson);
+                }
+                ((ObjectNode) objeJson).put("grup", nodoJson);
+            }
+            else
+            {
+                ((ObjectNode) objeJson).put("resp", Boolean.FALSE);
+            }
+            mapa.configure(SerializationFeature.INDENT_OUTPUT, true);
+            StringWriter sali = new StringWriter();
+            mapa.writeValue(sali, objeJson);
+            return Response.status(200).entity(sali.toString()).build();
+        }
+        catch(Exception ex)
+        {
+            return Response.status(200).entity("Error: " + ex.getMessage()).build();
+        }
+    }
+    
+    
+    @GET
+    @Path("consEmpl/{nomb}/{apel}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response consUsua(@PathParam("nomb") String nomb, @PathParam("apel") String apel)
+    {
+        try
+        {
+            List<Empleados> obje = new WebServicesCtrl().consListEmpl(nomb.trim(), apel.trim());
+            ObjectMapper mapa = new ObjectMapper();
+            JsonNode objeJson = mapa.createObjectNode();
+            if(obje != null)
+            {
+                ((ObjectNode) objeJson).put("resp", Boolean.TRUE);
+                ArrayNode nodoJson = mapa.createArrayNode();
+                for(Empleados temp : obje)
+                {
+                    JsonNode elemJson = mapa.createObjectNode();
+                    ((ObjectNode) elemJson).put("codi", temp.getCodi());   
+                    ((ObjectNode) elemJson).put("nomb", temp.getNomb() + " " + temp.getApel());                    
+                    String tipo;
+                    switch(temp.getTipoEmpl())
+                    {
+                        case 1:
+                            tipo = "doceTecn";
+                            break;
+                        case 2:
+                            tipo = "doceAcad";
+                            break;
+                        case 3:
+                            tipo = "emplAdmi";
+                            break;
+                        case 4:
+                            tipo = "emplRece";
+                            break;
+                        default:
+                            tipo = "N/D";
+                            break;
+                    }
+                    ((ObjectNode) elemJson).put("tipo", tipo);
+                    ((ObjectNode) elemJson).put("foto", temp.getFoto());
+                    ((ObjectNode) elemJson).put("esta", temp.getEsta());
+                    nodoJson.add(elemJson);
+                }
+                ((ObjectNode) objeJson).put("resu", nodoJson);
+            }
+            else
+            {
+                ((ObjectNode) objeJson).put("resp", Boolean.FALSE);
+            }
+            mapa.configure(SerializationFeature.INDENT_OUTPUT, true);
+            StringWriter sali = new StringWriter();
+            mapa.writeValue(sali, objeJson);
+            return Response.status(200).entity(sali.toString()).build();
+        }
+        catch(Exception ex)
+        {
+            return Response.status(200).entity("Error: " + ex.getMessage()).build();
+        }
+    }
+    
+    @GET
+    @Path("consAlum/{nomb}/{apel}/{grad}/{espe}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response consAlum(@PathParam("nomb") String nomb, @PathParam("apel") String apel, 
+            @PathParam("grad") String grad, @PathParam("espe") String espe)
+    {
+        try
+        {
+            List<Alumnos> obje = new WebServicesCtrl().consAlum(nomb, apel, grad, espe);
+            ObjectMapper mapa = new ObjectMapper();
+            JsonNode objeJson = mapa.createObjectNode();
+            if(obje != null)
+            {
+                ((ObjectNode) objeJson).put("resp", Boolean.TRUE);
+                ArrayNode nodoJson = mapa.createArrayNode();
+                for(Alumnos temp : obje)
+                {
+                    JsonNode elemJson = mapa.createObjectNode();
+                    ((ObjectNode) elemJson).put("carn", temp.getCarn());
+                    ((ObjectNode) elemJson).put("nomb", temp.getNomb() + " " + temp.getApel());
+                    ((ObjectNode) elemJson).put("foto", temp.getFoto());
+                    ((ObjectNode) elemJson).put("grad", temp.getGrad());
+                    ((ObjectNode) elemJson).put("espe", temp.getEspe());
+                    ((ObjectNode) elemJson).put("grup", temp.getGrup());
+                    ((ObjectNode) elemJson).put("seccAcad", temp.getSeccAcad());
+                    ((ObjectNode) elemJson).put("seccTecn", temp.getSeccTecn());
+                    ((ObjectNode) elemJson).put("esta", temp.getEsta());
+                    nodoJson.add(elemJson);
+                }
+                ((ObjectNode) objeJson).put("resu", nodoJson);
+            }
+            else
+            {
+                ((ObjectNode) objeJson).put("resp", Boolean.FALSE);
+            }
+            mapa.configure(SerializationFeature.INDENT_OUTPUT, true);
+            StringWriter sali = new StringWriter();
+            mapa.writeValue(sali, objeJson);
+            return Response.status(200).entity(sali.toString()).build();
+        }
+        catch(Exception ex)
+        {
+            return Response.status(200).entity("Error: " + ex.getMessage()).build();
+        }
+    }
+    
+    @GET
     @Path("consUsua/{nomb}/{apel}/{tipo}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response getMsg(@PathParam("nomb") String nomb, @PathParam("apel") String apel, @PathParam("tipo") String tipo)
+    public Response consUsua(@PathParam("nomb") String nomb, @PathParam("apel") String apel, @PathParam("tipo") String tipo)
     {
         try
         {
@@ -202,7 +439,7 @@ public class MiWebServices {
     @GET
     @Path("consUsua/{usua}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response getMsgByUsua(@PathParam("usua") String usua)
+    public Response consUsua(@PathParam("usua") String usua)
     {
         try
         {

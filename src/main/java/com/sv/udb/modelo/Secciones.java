@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Secciones.findByCodi", query = "SELECT s FROM Secciones s WHERE s.codi = :codi"),
     @NamedQuery(name = "Secciones.findByNomb", query = "SELECT s FROM Secciones s WHERE s.nomb = :nomb"),
     @NamedQuery(name = "Secciones.findByDesc", query = "SELECT s FROM Secciones s WHERE s.desc = :desc"),
-    @NamedQuery(name = "Secciones.findByTipo", query = "SELECT s FROM Secciones s WHERE s.tipo = :tipo")})
+    @NamedQuery(name = "Secciones.findByGrad", query = "SELECT s FROM Secciones s WHERE s.grad = :grad")})
 public class Secciones implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,8 +49,9 @@ public class Secciones implements Serializable {
     @Size(max = 100)
     @Column(name = "\"desc\"")
     private String desc;
-    @Column(name = "tipo")
-    private Integer tipo;
+    @Size(max = 100)
+    @Column(name = "grad")
+    private String grad;
     @OneToMany(mappedBy = "codiSecc", fetch = FetchType.EAGER)
     private List<Seccalum> seccalumList;
     @OneToMany(mappedBy = "codiSecc", fetch = FetchType.EAGER)
@@ -87,12 +88,12 @@ public class Secciones implements Serializable {
         this.desc = desc;
     }
 
-    public Integer getTipo() {
-        return tipo;
+    public String getGrad() {
+        return grad;
     }
 
-    public void setTipo(Integer tipo) {
-        this.tipo = tipo;
+    public void setGrad(String grad) {
+        this.grad = grad;
     }
 
     @XmlTransient
