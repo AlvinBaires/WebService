@@ -14,6 +14,15 @@ Pueden usar esta herramienta para convertirlas http://passwordsgenerator.net/sha
 ```
 http://www.opensv.tk:8080/WebService/MiServicio/consAlum/{carn}
 ```
+## Buscar Alumnos por Criterios
+```
+http://www.opensv.tk:8080/WebService/MiServicio/consAlum/{nomb}/{apel}/{grad}/{espe}
+```
+En esta parte se pueden hacer búsquedas parciales, por ejemplo
+```
+http://www.opensv.tk:8080/WebService/MiServicio/consAlum/j/p/2/i
+```
+El resultado devolverá los alumnos que contenga en su nombre la letra j, en su apellido p, en su grado el 2 y en su especialidad i
 
 ## Buscar Usuarios por Criterios
 ```
@@ -38,3 +47,22 @@ El resultado sería los usuarios alumnos que contengan "j" en su nombre ó "a" e
 ```
 http://www.opensv.tk:8080/WebService/MiServicio/consUsua/{usua}
 ```
+
+## Consultar Empleado por Nombre de Usuario
+```
+http://www.opensv.tk:8080/WebService/MiServicio/consEmpl/{usua}
+```
+## Consultar Empleado por Código de Empleado
+```
+http://www.opensv.tk:8080/WebService/MiServicio/consEmplByCodi/{codi}
+```
+## Buscar Empleado por Criterios
+```
+http://www.opensv.tk:8080/WebService/MiServicio/consEmpl/{nomb}/{apel}
+```
+### El parámetro nomb y apel
+En esta parte se pueden hacer búsquedas parciales, por ejemplo
+```
+http://www.opensv.tk:8080/WebService/MiServicio/consEmpl/j/a
+```
+El resultado sería los empleados que contengan "j" en su nombre ó "a" en su apellido
