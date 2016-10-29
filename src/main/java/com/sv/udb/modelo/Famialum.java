@@ -27,15 +27,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Mauricio
  */
 @Entity
-@Table(name = "usuarios", catalog = "webservices", schema = "")
+@Table(name = "famialum", catalog = "webservices", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u"),
-    @NamedQuery(name = "Usuarios.findByCodi", query = "SELECT u FROM Usuarios u WHERE u.codi = :codi"),
-    @NamedQuery(name = "Usuarios.findByAcceUsua", query = "SELECT u FROM Usuarios u WHERE u.acceUsua = :acceUsua"),
-    @NamedQuery(name = "Usuarios.findByContUsua", query = "SELECT u FROM Usuarios u WHERE u.contUsua = :contUsua"),
-    @NamedQuery(name = "Usuarios.findByEstaUsua", query = "SELECT u FROM Usuarios u WHERE u.estaUsua = :estaUsua")})
-public class Usuarios implements Serializable {
+    @NamedQuery(name = "Famialum.findAll", query = "SELECT f FROM Famialum f"),
+    @NamedQuery(name = "Famialum.findByCodi", query = "SELECT f FROM Famialum f WHERE f.codi = :codi"),
+    @NamedQuery(name = "Famialum.findByNomb", query = "SELECT f FROM Famialum f WHERE f.nomb = :nomb"),
+    @NamedQuery(name = "Famialum.findByApel", query = "SELECT f FROM Famialum f WHERE f.apel = :apel"),
+    @NamedQuery(name = "Famialum.findByPare", query = "SELECT f FROM Famialum f WHERE f.pare = :pare"),
+    @NamedQuery(name = "Famialum.findByEsta", query = "SELECT f FROM Famialum f WHERE f.esta = :esta")})
+public class Famialum implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -43,36 +44,33 @@ public class Usuarios implements Serializable {
     @Basic(optional = false)
     @Column(name = "codi")
     private Integer codi;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "acce_usua")
-    private String acceUsua;
     @Size(max = 100)
-    @Column(name = "cont_usua")
-    private String contUsua;
+    @Column(name = "nomb")
+    private String nomb;
+    @Size(max = 100)
+    @Column(name = "apel")
+    private String apel;
+    @Size(max = 100)
+    @Column(name = "pare")
+    private String pare;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "esta_usua")
-    private int estaUsua;
-    @JoinColumn(name = "codi_empl", referencedColumnName = "codi")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Empleados codiEmpl;
+    @Column(name = "esta")
+    private int esta;
     @JoinColumn(name = "codi_alum", referencedColumnName = "codi")
     @ManyToOne(fetch = FetchType.EAGER)
     private Alumnos codiAlum;
 
-    public Usuarios() {
+    public Famialum() {
     }
 
-    public Usuarios(Integer codi) {
+    public Famialum(Integer codi) {
         this.codi = codi;
     }
 
-    public Usuarios(Integer codi, String acceUsua, int estaUsua) {
+    public Famialum(Integer codi, int esta) {
         this.codi = codi;
-        this.acceUsua = acceUsua;
-        this.estaUsua = estaUsua;
+        this.esta = esta;
     }
 
     public Integer getCodi() {
@@ -83,36 +81,36 @@ public class Usuarios implements Serializable {
         this.codi = codi;
     }
 
-    public String getAcceUsua() {
-        return acceUsua;
+    public String getNomb() {
+        return nomb;
     }
 
-    public void setAcceUsua(String acceUsua) {
-        this.acceUsua = acceUsua;
+    public void setNomb(String nomb) {
+        this.nomb = nomb;
     }
 
-    public String getContUsua() {
-        return contUsua;
+    public String getApel() {
+        return apel;
     }
 
-    public void setContUsua(String contUsua) {
-        this.contUsua = contUsua;
+    public void setApel(String apel) {
+        this.apel = apel;
     }
 
-    public int getEstaUsua() {
-        return estaUsua;
+    public String getPare() {
+        return pare;
     }
 
-    public void setEstaUsua(int estaUsua) {
-        this.estaUsua = estaUsua;
+    public void setPare(String pare) {
+        this.pare = pare;
     }
 
-    public Empleados getCodiEmpl() {
-        return codiEmpl;
+    public int getEsta() {
+        return esta;
     }
 
-    public void setCodiEmpl(Empleados codiEmpl) {
-        this.codiEmpl = codiEmpl;
+    public void setEsta(int esta) {
+        this.esta = esta;
     }
 
     public Alumnos getCodiAlum() {
@@ -133,10 +131,10 @@ public class Usuarios implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Usuarios)) {
+        if (!(object instanceof Famialum)) {
             return false;
         }
-        Usuarios other = (Usuarios) object;
+        Famialum other = (Famialum) object;
         if ((this.codi == null && other.codi != null) || (this.codi != null && !this.codi.equals(other.codi))) {
             return false;
         }
@@ -145,7 +143,7 @@ public class Usuarios implements Serializable {
 
     @Override
     public String toString() {
-        return "com.sv.udb.modelo.Usuarios[ codi=" + codi + " ]";
+        return "com.sv.udb.modelo.Famialum[ codi=" + codi + " ]";
     }
     
 }
