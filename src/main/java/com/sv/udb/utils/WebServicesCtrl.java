@@ -103,6 +103,32 @@ public class WebServicesCtrl
         return resp;
     }
     
+    public List<Alumnos> consAlumByDoce(int codi)
+    {
+        List<Alumnos> resp = null;
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("POOPU");
+        EntityManager em = emf.createEntityManager();
+        try
+        {
+            String query = "SELECT DISTINCT a.* FROM alumnos a INNER JOIN seccalum s ON a.codi = s.codi_alum " +
+                            "WHERE s.codi_secc IN (SELECT codi_secc FROM seccempl WHERE codi_empl = ?1) AND a.esta = ?2";
+            Query q = em.createNativeQuery(query, Alumnos.class);
+            q.setParameter(1, codi);
+            q.setParameter(2, 1);
+            resp = q.getResultList();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            em.close();
+            emf.close();            
+        }
+        return resp;
+    }
+    
     public List<Empleados> consEmplByAlum(String carn)
     {
         List<Empleados> resp = null;

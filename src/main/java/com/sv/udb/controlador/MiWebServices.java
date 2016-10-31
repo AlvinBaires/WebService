@@ -395,6 +395,51 @@ public class MiWebServices {
     }
     
     @GET
+    @Path("consAlumByDoce/{codi}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response consAlumByDoce(@PathParam("codi") int codi)
+    {
+        try
+        {
+            List<Alumnos> obje = new WebServicesCtrl().consAlumByDoce(codi);
+            ObjectMapper mapa = new ObjectMapper();
+            JsonNode objeJson = mapa.createObjectNode();
+            if(obje != null)
+            {
+                ((ObjectNode) objeJson).put("resp", Boolean.TRUE);
+                ArrayNode nodoJson = mapa.createArrayNode();
+                for(Alumnos temp : obje)
+                {
+                    JsonNode elemJson = mapa.createObjectNode();
+                    ((ObjectNode) elemJson).put("carn", temp.getCarn());
+                    ((ObjectNode) elemJson).put("nomb", temp.getNomb() + " " + temp.getApel());
+                    ((ObjectNode) elemJson).put("foto", temp.getFoto());
+                    ((ObjectNode) elemJson).put("grad", temp.getGrad());
+                    ((ObjectNode) elemJson).put("espe", temp.getEspe());
+                    ((ObjectNode) elemJson).put("grup", temp.getGrup());
+                    ((ObjectNode) elemJson).put("seccAcad", temp.getSeccAcad());
+                    ((ObjectNode) elemJson).put("seccTecn", temp.getSeccTecn());
+                    ((ObjectNode) elemJson).put("esta", temp.getEsta());
+                    nodoJson.add(elemJson);
+                }
+                ((ObjectNode) objeJson).put("resu", nodoJson);
+            }
+            else
+            {
+                ((ObjectNode) objeJson).put("resp", Boolean.FALSE);
+            }
+            mapa.configure(SerializationFeature.INDENT_OUTPUT, true);
+            StringWriter sali = new StringWriter();
+            mapa.writeValue(sali, objeJson);
+            return Response.status(200).entity(sali.toString()).build();
+        }
+        catch(Exception ex)
+        {
+            return Response.status(200).entity("Error: " + ex.getMessage()).build();
+        }
+    }
+    
+    @GET
     @Path("consUsua/{nomb}/{apel}/{tipo}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Response consUsua(@PathParam("nomb") String nomb, @PathParam("apel") String apel, @PathParam("tipo") String tipo)

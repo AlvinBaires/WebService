@@ -24,6 +24,11 @@ http://www.opensv.tk:8080/WebService/MiServicio/consAlum/j/p/2/i
 ```
 El resultado devolverá los alumnos que contenga en su nombre la letra j, en su apellido p, en su grado el 2 y en su especialidad i
 
+## Consultar Alumno por Código de Docente
+```
+http://www.opensv.tk:8080/WebService/MiServicio/consAlumByDoce/{codi}
+```
+
 ## Buscar Usuarios por Criterios
 ```
 http://www.opensv.tk:8080/WebService/MiServicio/consUsua/{nomb}/{apel}/{tipo}
