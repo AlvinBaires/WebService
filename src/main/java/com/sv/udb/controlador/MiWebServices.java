@@ -171,6 +171,7 @@ public class MiWebServices {
             if(obje!= null)
             {
                 ((ObjectNode) objeJson).put("resp", Boolean.TRUE);
+                ((ObjectNode) objeJson).put("codi", obje.getCodi());
                 ((ObjectNode) objeJson).put("nomb", obje.getNomb() + " " + obje.getApel());
                 ((ObjectNode) objeJson).put("foto", obje.getFoto());
                 ((ObjectNode) objeJson).put("mail", obje.getMail());
