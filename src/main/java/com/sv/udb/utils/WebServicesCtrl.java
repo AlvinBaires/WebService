@@ -136,7 +136,7 @@ public class WebServicesCtrl
         EntityManager em = emf.createEntityManager();
         try
         {
-            String query = "SELECT e.*, s.nomb FROM empleados e INNER JOIN seccempl se ON e.codi = se.codi_empl " +
+            String query = "SELECT DISTINCT e.* FROM empleados e INNER JOIN seccempl se ON e.codi = se.codi_empl " +
                             "INNER JOIN secciones s ON se.codi_secc = s.codi " +
                             "WHERE se.codi_secc IN (SELECT codi_secc FROM seccalum sa INNER JOIN " +
                             "alumnos a ON sa.codi_alum = a.codi WHERE a.carn = ?1)";

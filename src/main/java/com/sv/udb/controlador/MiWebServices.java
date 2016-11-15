@@ -136,6 +136,7 @@ public class MiWebServices {
                 {
                     JsonNode elemJson = mapa.createObjectNode();
                     ((ObjectNode) elemJson).put("codi", temp.getCodi());
+                    ((ObjectNode) elemJson).put("mail", temp.getMail());
                     ((ObjectNode) elemJson).put("nomb", temp.getNomb() + " " + temp.getApel());
                     ((ObjectNode) elemJson).put("foto", temp.getFoto());
                     ((ObjectNode) elemJson).put("secc", "N/D");
