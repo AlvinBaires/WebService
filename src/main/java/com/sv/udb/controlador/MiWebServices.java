@@ -48,12 +48,13 @@ public class MiWebServices {
                 for(Famialum temp : new WebServicesCtrl().consFamByAlum(obje.getCarn()))
                 {
                     JsonNode elemJson = mapa.createObjectNode();                    
-                    ((ObjectNode) elemJson).put("nomb", temp.getNomb() + " " + temp.getApel());
+                    ((ObjectNode) elemJson).put("nomb", temp.getNomb());
+                    ((ObjectNode) elemJson).put("apel", temp.getApel());
                     ((ObjectNode) elemJson).put("mail", temp.getCorr());
                     ((ObjectNode) elemJson).put("pare", temp.getPare());
                     nodoJson.add(elemJson);
                 }
-                ((ObjectNode) objeJson).put("doce", nodoJson);
+                ((ObjectNode) objeJson).put("fami", nodoJson);
             }
             else
             {
