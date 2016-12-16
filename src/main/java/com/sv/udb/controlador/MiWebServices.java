@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sv.udb.modelo.Alumnos;
 import com.sv.udb.modelo.Empleados;
+import com.sv.udb.modelo.Famialum;
 import com.sv.udb.modelo.Seccempl;
 import com.sv.udb.modelo.Usuarios;
 import com.sv.udb.utils.WebServicesCtrl;
@@ -29,6 +30,47 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 @Path("/MiServicio")
 public class MiWebServices {
+    
+    @GET
+    @Path("consFamAlum/{carn}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response consFamAlum(@PathParam("carn") String carn)
+    {
+        try
+        {
+            Alumnos obje = new WebServicesCtrl().consAlum(carn);
+            ObjectMapper mapa = new ObjectMapper();
+            JsonNode objeJson = mapa.createObjectNode();
+            if(obje!= null)
+            {
+                ((ObjectNode) objeJson).put("resp", Boolean.TRUE);                
+                ArrayNode nodoJson = mapa.createArrayNode();
+                for(Famialum temp : new WebServicesCtrl().consFamByAlum(obje.getCarn()))
+                {
+                    JsonNode elemJson = mapa.createObjectNode();                    
+                    ((ObjectNode) elemJson).put("nomb", temp.getNomb() + " " + temp.getApel());
+                    ((ObjectNode) elemJson).put("mail", temp.getCorr());
+                    ((ObjectNode) elemJson).put("pare", temp.getPare());
+                    nodoJson.add(elemJson);
+                }
+                ((ObjectNode) objeJson).put("doce", nodoJson);
+            }
+            else
+            {
+                ((ObjectNode) objeJson).put("resp", Boolean.FALSE);
+            }
+            mapa.configure(SerializationFeature.INDENT_OUTPUT, true);
+            StringWriter sali = new StringWriter();
+            mapa.writeValue(sali, objeJson);
+            return Response.status(200).entity(sali.toString()).build();
+        }
+        catch(Exception ex)
+        {
+            return Response.status(200).entity("Error: " + ex.getMessage()).build();
+        }
+    }
+    
+    
     @GET
     @Path("consLogi/{user}/{pass}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")

@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Mauricio
+ * @author Alvin
  */
 @Entity
 @Table(name = "famialum", catalog = "webservices", schema = "")
@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Famialum.findByCodi", query = "SELECT f FROM Famialum f WHERE f.codi = :codi"),
     @NamedQuery(name = "Famialum.findByNomb", query = "SELECT f FROM Famialum f WHERE f.nomb = :nomb"),
     @NamedQuery(name = "Famialum.findByApel", query = "SELECT f FROM Famialum f WHERE f.apel = :apel"),
+    @NamedQuery(name = "Famialum.findByCorr", query = "SELECT f FROM Famialum f WHERE f.corr = :corr"),
     @NamedQuery(name = "Famialum.findByPare", query = "SELECT f FROM Famialum f WHERE f.pare = :pare"),
     @NamedQuery(name = "Famialum.findByEsta", query = "SELECT f FROM Famialum f WHERE f.esta = :esta")})
 public class Famialum implements Serializable {
@@ -50,6 +51,9 @@ public class Famialum implements Serializable {
     @Size(max = 100)
     @Column(name = "apel")
     private String apel;
+    @Size(max = 50)
+    @Column(name = "corr")
+    private String corr;
     @Size(max = 100)
     @Column(name = "pare")
     private String pare;
@@ -95,6 +99,14 @@ public class Famialum implements Serializable {
 
     public void setApel(String apel) {
         this.apel = apel;
+    }
+
+    public String getCorr() {
+        return corr;
+    }
+
+    public void setCorr(String corr) {
+        this.corr = corr;
     }
 
     public String getPare() {

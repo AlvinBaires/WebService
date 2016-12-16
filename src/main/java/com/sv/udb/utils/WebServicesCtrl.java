@@ -7,6 +7,7 @@ package com.sv.udb.utils;
 
 import com.sv.udb.modelo.Alumnos;
 import com.sv.udb.modelo.Empleados;
+import com.sv.udb.modelo.Famialum;
 import com.sv.udb.modelo.Usuarios;
 import static java.util.Collections.list;
 import java.util.List;
@@ -141,6 +142,30 @@ public class WebServicesCtrl
                             "WHERE se.codi_secc IN (SELECT codi_secc FROM seccalum sa INNER JOIN " +
                             "alumnos a ON sa.codi_alum = a.codi WHERE a.carn = ?1)";
             Query q = em.createNativeQuery(query, Empleados.class);
+            q.setParameter(1, carn);
+            resp = q.getResultList();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            em.close();
+            emf.close();            
+        }
+        return resp;
+    }
+    
+    public List<Famialum> consFamByAlum(String carn)
+    {
+        List<Famialum> resp = null;
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("POOPU");
+        EntityManager em = emf.createEntityManager();
+        try
+        {
+            String query = "SELECT f.* FROM famialum f, alumnos a  WHERE f.esta=1 AND a.codi = f.codi_alum AND a.carn = ?1";
+            Query q = em.createNativeQuery(query, Famialum.class);
             q.setParameter(1, carn);
             resp = q.getResultList();
         }

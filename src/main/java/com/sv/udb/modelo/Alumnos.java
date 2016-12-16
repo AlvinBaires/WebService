@@ -54,6 +54,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Alumnos.findByEsta", query = "SELECT a FROM Alumnos a WHERE a.esta = :esta")})
 public class Alumnos implements Serializable {
 
+    @Lob
+    @Column(name = "foto")
+    private byte[] foto;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,9 +73,6 @@ public class Alumnos implements Serializable {
     @Size(max = 100)
     @Column(name = "apel")
     private String apel;
-    @Lob
-    @Column(name = "foto")
-    private byte[] foto;
     @Size(max = 100)
     @Column(name = "mail")
     private String mail;
@@ -159,13 +160,6 @@ public class Alumnos implements Serializable {
         this.apel = apel;
     }
 
-    public byte[] getFoto() {
-        return foto;
-    }
-
-    public void setFoto(byte[] foto) {
-        this.foto = foto;
-    }
 
     public String getMail() {
         return mail;
@@ -329,6 +323,14 @@ public class Alumnos implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.Alumnos[ codi=" + codi + " ]";
+    }
+
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
     }
     
 }
